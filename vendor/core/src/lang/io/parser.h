@@ -27,18 +27,18 @@ reset(std::basic_stringstream<CharT, Traits, Allocator<CharT>> &stream)
 template <typename CharT, typename Traits,
           template <typename T> typename Allocator>
 inline auto
-  parse_index(std::basic_stringstream<CharT, Traits, Allocator<CharT>> &stream,
-              const std::uint64_t column) -> unsigned int {
-    try {
-      const auto converted = std::stoul(stream.str());
-      if (converted > static_cast<unsigned long>(std::numeric_limits<unsigned int>::max())) {
-        throw PointerParseError(column);
-      }
-      return static_cast<unsigned int>(converted);
-    } catch (const std::out_of_range &) {
+parse_index(std::basic_stringstream<CharT, Traits, Allocator<CharT>> &stream,
+            const std::uint64_t column) -> unsigned int {
+  try {
+    const auto converted = std::stoul(stream.str());
+    if (converted > std::numeric_limits<unsigned int>::max()) {
       throw PointerParseError(column);
     }
+    return static_cast<unsigned int>(converted);
+  } catch (const std::out_of_range &) {
+    throw PointerParseError(column);
   }
+}
 
 } // namespace sourcemeta::core::internal
 
